@@ -118,16 +118,23 @@ class TodoList extends Component
     {
         if (! Schema::hasTable('tasks')) {
             return view('livewire.todo-list', [
-                'tasks' => collect(),
+                'activeTasks' => collect(),
+                'recentCompletedTasks' => collect(),
                 'totalTasks' => 0,
                 'completedTasks' => 0,
             ]);
         }
 
         $tasks = $this->queryTasks()->latest()->get();
+        $activeTasks = $tasks->where('is_completed', false)->values();
+        $recentCompletedTasks = $tasks
+            ->where('is_completed', true)
+            ->take(5)
+            ->values();
 
         return view('livewire.todo-list', [
-            'tasks' => $tasks,
+            'activeTasks' => $activeTasks,
+            'recentCompletedTasks' => $recentCompletedTasks,
             'totalTasks' => $tasks->count(),
             'completedTasks' => $tasks->where('is_completed', true)->count(),
         ]);
