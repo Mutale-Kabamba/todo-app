@@ -53,7 +53,7 @@
             </form>
 
             <ul class="space-y-3">
-                @forelse ($tasks as $task)
+                @forelse ($activeTasks as $task)
                     <li class="rounded-2xl border border-gray-700 bg-[#121722] p-3">
                         @if ($editingTaskId === $task->id)
                             <div class="space-y-2">
@@ -104,10 +104,26 @@
                     </li>
                 @empty
                     <li class="rounded-2xl border border-dashed border-gray-700 bg-[#10131a] p-4 text-center text-sm text-gray-400">
-                        No tasks yet. Create your first task.
+                        No active tasks. Create your first task.
                     </li>
                 @endforelse
             </ul>
         </div>
+    </div>
+
+    <div class="mx-auto mt-4 w-full max-w-md px-1">
+        <h2 class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Recent Done</h2>
+
+        @if ($recentCompletedTasks->isEmpty())
+            <p class="text-xs text-gray-600">No completed tasks yet.</p>
+        @else
+            <ul class="space-y-1.5 text-sm text-gray-500">
+                @foreach ($recentCompletedTasks as $task)
+                    <li class="truncate">
+                        {{ $task->title }}
+                    </li>
+                @endforeach
+            </ul>
+        @endif
     </div>
 </div>
